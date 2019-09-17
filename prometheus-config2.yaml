@@ -26,13 +26,21 @@ data:
 
     scrape_configs:
     
-      # - job_name: 'prometheus'
+      - job_name: 'prometheus'
 
-      #   # metrics_path defaults to '/metrics'
-      #   # scheme defaults to 'http'.
+        # metrics_path defaults to '/metrics'
+        # scheme defaults to 'http'.
 
-      #   static_configs:
-      #   - targets: ['localhost:9090']
+        static_configs:
+        - targets: ['localhost:9090']
+      - job_name: 'node_exporter_metrics'
+        scrape_interval: 15s
+        scrape_timeout: 15s
+        static_configs:
+        - targets: ['3.83.106.103:9100']
+      - job_name: 'cadvisor'
+        static_configs:
+        - targets: ['3.83.106.103:8080']
 
       - job_name: 'kubernetes-nodes'
 
@@ -82,13 +90,3 @@ data:
           action: replace
           target_label: kubernetes_pod_name
 
-    # remote storage details. For Metricfire accounts these can be
-    # found at https://app.metricfire.com/quickstart/
-    
-    remote_read:
-        - url: https://remote.metricfire.com/read
-          bearer_token: <metricfire-API-Key>
-
-    remote_write:
-        - url: https://remote.metricfire.com/write
-          bearer_token: <metricfire-API-Key>
